@@ -19,5 +19,8 @@
     "@types/ejs": "^3.1.5",
     "@types/node": "^20.12.7",
     "ejs": "^3.1.10"
+  },
+  "dependencies": {
+    "tapable": "^2.2.1"
   }
 }

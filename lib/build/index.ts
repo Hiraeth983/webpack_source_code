@@ -10,6 +10,7 @@ import ejs from "ejs";
 import { Graph, Config } from "../types";
 
 import { Loader } from "../loader";
+import { hooks } from "../plugin/hooks";
 
 let globalId = 0;
 
@@ -62,6 +63,16 @@ export function build(graph: Graph[], config: Config) {
   const content = ejs.render(template, { data: graph, entry: "0" });
   const filename = config.output.filename;
   const outputDir = config.output.path;
+  hooks.emit.callAsync(graph, (error) => {
+    if (error) {
+      console.log(error);
+    }
+  });
   fs.mkdirSync(outputDir, { recursive: true });
   fs.writeFileSync(path.resolve(outputDir, filename), content);
+  hooks.afterEmit.callAsync(graph, (error) => {
+    if (error) {
+      console.log(error);
+    }
+  });
 }
